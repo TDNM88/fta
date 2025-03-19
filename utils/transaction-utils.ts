@@ -31,6 +31,7 @@ interface RawTransaction {
 
 /**
  * Extract transaction data from a PDF file
+ * This function should only be called from server-side code
  * @param file The PDF file to process
  * @returns Array of extracted transactions
  */
@@ -46,6 +47,15 @@ export async function extractTransactionData(file: File): Promise<Transaction[]>
   }
 
   try {
+    // In a real application, you would use the Gemini API here
+    // The API key is accessed server-side only
+    const apiKey = process.env.GEMINI_API_KEY
+    
+    if (!apiKey) {
+      console.error("Gemini API key not found")
+      throw new Error("API configuration error. Please contact support.")
+    }
+    
     // For demonstration purposes, we'll use simulated data
     // In a real application, you would implement server-side PDF processing
     return simulateTransactionExtraction(file)

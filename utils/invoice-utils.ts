@@ -52,6 +52,7 @@ export function standardizeDate(dateString: string | undefined): string | null {
 
 /**
  * Extract raw text from an invoice file using Gemini API
+ * This function should only be called from server-side code
  * @param file The file to process
  * @returns Extracted text
  */
@@ -68,8 +69,17 @@ export async function extractRawText(file: File): Promise<string> {
   }
 
   try {
+    // In a real application, you would use the Gemini API here
+    // The API key is accessed server-side only
+    const apiKey = process.env.GEMINI_API_KEY
+    
+    if (!apiKey) {
+      console.error("Gemini API key not found")
+      throw new Error("API configuration error. Please contact support.")
+    }
+    
     // For demonstration purposes, return simulated data
-    // In a real application, you would implement server-side file processing
+    // In a real application, you would implement server-side file processing with the Gemini API
     return simulateExtraction(file)
   } catch (error) {
     console.error("Error extracting text:", error)
@@ -123,7 +133,7 @@ Converted Amount: ${(Math.random() * 3000 + 1200).toFixed(2)}
 
 /**
  * Parse raw text into structured invoice data
- * @param rawText The raw text to parse
+ * @param text The raw text to parse
  * @returns Structured invoice data
  */
 export function parseInvoiceText(text: string): InvoiceData {
